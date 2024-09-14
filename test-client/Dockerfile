@@ -1,5 +1,5 @@
 FROM node:lts-alpine
 WORKDIR /app
 COPY . .
-RUN npm run build
+RUN npm i
 CMD ["npm","start"]
