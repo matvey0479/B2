@@ -18,7 +18,6 @@ export const savePolygon = async (request) => {
               'Content-Type': 'application/json'
             }
     });
-    setPo
 
         return response.data;
     }catch(e) {
