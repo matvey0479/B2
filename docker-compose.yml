@@ -1,0 +1,17 @@
+services:
+  backend:
+    image: ${DOCKER_REGISTRY-}test
+    build:
+      context: .
+      dockerfile: Test/Dockerfile
+
+  client:
+    image: client
+    build:
+      context: ./test-client
+      dockerfile: Dockerfile
+
+  postgres_db:
+    image: postgres:latest
+    container_name: postgres
+
