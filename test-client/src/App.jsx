@@ -72,11 +72,9 @@ function App () {
         <div className='m-2'>
           <label>Загрузить полигон</label>
           <div className='mt-1 w-25'>
-            <Select onChange={(e) => setPolygon(e)} options={polygons.map((p) => ({ value: p.points, label: p.name}))}/>
+            <Select  id ='selectPolygon' onChange={(e) => setPolygon(e)} options={polygons.map((p) => ({ value: p.points, label: p.name}))}/>
           </div>
         </div>
-        
-        
       </>
     )
 }
@@ -89,12 +87,14 @@ function drawPoint(){
     context.fill();
     point = {x:e.clientX,
              y:e.clientY};
+    
   },{ once: true });
   
   return;
 }
  
 function drawStuff() {
+  polygon.points.shift();
   document.getElementById('draw').disabled=true;
   // нажатие мыши
   canvas.addEventListener("mousedown", mouseDown,{ once: true });
@@ -135,8 +135,8 @@ const replay = (points) => {
     points.value.sort((a, b) => parseFloat(a.number) - parseFloat(b.number));
     let startX = points.value[1].x;
     let startY=points.value[1].y;
-    let endX = points.value[points.value.length-2].x;
-    let endY = points.value[points.value.length-2].y;
+    let endX = points.value[points.value.length-1].x;
+    let endY = points.value[points.value.length-1].y;
     
     for(let i=1;i<points.value.length;i++)
     {
@@ -146,15 +146,15 @@ const replay = (points) => {
 
       polygon.points.push(points.value[i]);
       
-      context.lineTo(x - canvas.offsetLeft, y - canvas.offsetLeft);
+      context.lineTo(x - canvas.offsetLeft, y - canvas.offsetTop);
 
       context.stroke();
       context.beginPath();
-      context.moveTo(x - canvas.offsetLeft, y - canvas.offsetLeft);
+      context.moveTo(x - canvas.offsetLeft, y - canvas.offsetTop);
       draw = false;  
     }
-    context.moveTo(endX - canvas.offsetLeft, endY - canvas.offsetLeft);
-    context.lineTo(startX - canvas.offsetLeft, startY - canvas.offsetLeft);
+    context.moveTo(endX - canvas.offsetLeft, endY - canvas.offsetTop);
+    context.lineTo(startX - canvas.offsetLeft, startY - canvas.offsetTop);
     context.stroke();
   }
 }
@@ -183,11 +183,11 @@ function mouseDown(e){
 
 
 function mouseUp(e){
+  num=0;
   mouse.x = e.pageX - this.offsetLeft;
   mouse.y = e.pageY - this.offsetTop;
   context.lineTo(mouse.x, mouse.y);
-  context.closePath();
-  polygon.points.push(polygon.points[1]); 
+  context.closePath(); 
   context.stroke();
   draw = false;  
   context.save();
