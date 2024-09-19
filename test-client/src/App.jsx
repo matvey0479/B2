@@ -94,6 +94,7 @@ function drawPoint(){
 }
  
 function drawStuff() {
+  clearCanvas();
   polygon.points.shift();
   document.getElementById('draw').disabled=true;
   // нажатие мыши
